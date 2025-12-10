@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BookOpen, Trophy, ChevronRight, Clock, CheckCircle, XCircle, RotateCcw, Settings, RefreshCw, Database } from 'lucide-react';
 
 // Configuration - Update this with your Google Sheet URL
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKOTdOabg8YkThCV3pmIJjUNapPu_3WRoVsXSKPG4JMiH8jEvzQy-N-C8Badz20zMsua0Ni6fk8Dt7/pub?output=csvE';
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKOTdOabg8YkThCV3pmIJjUNapPu_3WRoVsXSKPG4JMiH8jEvzQy-N-C8Badz20zMsua0Ni6fk8Dt7/pub?output=csv';
 
 // Topic metadata
 const TOPICS_METADATA = {
