@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Trophy, ChevronRight, Clock, CheckCircle, XCircle, RotateCcw, Settings, RefreshCw, Database } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { BookOpen, Trophy, ChevronRight, Clock, CheckCircle, XCircle, RotateCcw, RefreshCw, Database } from 'lucide-react';
 
-// Configuration - Update this with your Google Sheet URL
 const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKOTdOabg8YkThCV3pmIJjUNapPu_3WRoVsXSKPG4JMiH8jEvzQy-N-C8Badz20zMsua0Ni6fk8Dt7/pub?output=csv';
 
-// Topic metadata
 const TOPICS_METADATA = {
   form4: {
     title: "Form 4 Topics",
@@ -26,83 +24,37 @@ const TOPICS_METADATA = {
   }
 };
 
-// LaTeX rendering component
+// LaTeX rendering component using KaTeX
 function MathText({ text }) {
-  const [renderedText, setRenderedText] = useState('');
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!text) return;
+    if (!text || !containerRef.current) return;
     
-    // Replace LaTeX delimiters with HTML
-    let processed = text;
-    
-    // Process inline math: $...$
-    processed = processed.replace(/\$([^$]+)\$/g, (match, latex) => {
-      return `<span class="latex-inline">${renderSimpleLatex(latex)}</span>`;
-    });
-    
-    // Process display math: $$...$$
-    processed = processed.replace(/\$\$([^$]+)\$\$/g, (match, latex) => {
-      return `<div class="latex-display">${renderSimpleLatex(latex)}</div>`;
-    });
-    
-    setRenderedText(processed);
+    // Check if KaTeX is available
+    if (typeof window.renderMathInElement !== 'undefined') {
+      try {
+        window.renderMathInElement(containerRef.current, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false}
+          ],
+          throwOnError: false,
+          trust: true,
+          strict: false
+        });
+      } catch (error) {
+        console.error('KaTeX rendering error:', error);
+      }
+    }
   }, [text]);
 
-  // Simple LaTeX to HTML converter for common math symbols
-  const renderSimpleLatex = (latex) => {
-    let html = latex;
-    
-    // Superscripts: x^2 -> x²
-    html = html.replace(/\^2/g, '²');
-    html = html.replace(/\^3/g, '³');
-    html = html.replace(/\^(\d)/g, '<sup>$1</sup>');
-    html = html.replace(/\^{([^}]+)}/g, '<sup>$1</sup>');
-    
-    // Subscripts: x_1 -> x₁
-    html = html.replace(/_(\d)/g, '<sub>$1</sub>');
-    html = html.replace(/_{([^}]+)}/g, '<sub>$1</sub>');
-    
-    // Fractions: \frac{a}{b}
-    html = html.replace(/\\frac{([^}]+)}{([^}]+)}/g, '<span class="fraction"><span class="frac-num">$1</span><span class="frac-line"></span><span class="frac-den">$2</span></span>');
-    
-    // Square root: \sqrt{x}
-    html = html.replace(/\\sqrt{([^}]+)}/g, '√($1)');
-    html = html.replace(/\\sqrt/g, '√');
-    
-    // Greek letters
-    html = html.replace(/\\alpha/g, 'α');
-    html = html.replace(/\\beta/g, 'β');
-    html = html.replace(/\\gamma/g, 'γ');
-    html = html.replace(/\\delta/g, 'δ');
-    html = html.replace(/\\theta/g, 'θ');
-    html = html.replace(/\\pi/g, 'π');
-    html = html.replace(/\\sigma/g, 'σ');
-    html = html.replace(/\\omega/g, 'ω');
-    
-    // Math symbols
-    html = html.replace(/\\times/g, '×');
-    html = html.replace(/\\div/g, '÷');
-    html = html.replace(/\\pm/g, '±');
-    html = html.replace(/\\neq/g, '≠');
-    html = html.replace(/\\leq/g, '≤');
-    html = html.replace(/\\geq/g, '≥');
-    html = html.replace(/\\approx/g, '≈');
-    html = html.replace(/\\infty/g, '∞');
-    html = html.replace(/\\int/g, '∫');
-    html = html.replace(/\\sum/g, '∑');
-    
-    // Remove remaining backslashes
-    html = html.replace(/\\/g, '');
-    
-    return html;
-  };
-
   return (
-    <span 
-      dangerouslySetInnerHTML={{ __html: renderedText }} 
-      className="math-content"
-    />
+    <span ref={containerRef} className="math-content">
+      {text}
+    </span>
   );
 }
 
@@ -122,50 +74,6 @@ export default function SPMAddMathApp() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
-  // Add CSS for LaTeX rendering
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      .math-content {
-        font-size: 1.1em;
-      }
-      .latex-inline {
-        display: inline-block;
-        margin: 0 2px;
-      }
-      .latex-display {
-        display: block;
-        text-align: center;
-        margin: 10px 0;
-        font-size: 1.2em;
-      }
-      .fraction {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        vertical-align: middle;
-        margin: 0 3px;
-      }
-      .frac-num {
-        border-bottom: 1px solid currentColor;
-        padding: 0 3px;
-      }
-      .frac-den {
-        padding: 0 3px;
-      }
-      sup {
-        font-size: 0.75em;
-        vertical-align: super;
-      }
-      sub {
-        font-size: 0.75em;
-        vertical-align: sub;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
-
   const fetchQuestions = async () => {
     setIsLoading(true);
     try {
@@ -184,7 +92,6 @@ export default function SPMAddMathApp() {
         const timestamp = localStorage.getItem('spm-questions-timestamp');
         setLastUpdated(timestamp ? new Date(timestamp) : null);
       }
-      alert('Could not fetch latest questions. Using cached version.');
     }
     setIsLoading(false);
   };
@@ -417,17 +324,6 @@ export default function SPMAddMathApp() {
               </div>
             </div>
           </div>
-
-          <div className="mt-12 bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">LaTeX Math Support</h3>
-            <p className="text-gray-600 mb-2">You can use LaTeX in your questions:</p>
-            <ul className="text-sm text-gray-600 space-y-1">
-              <li>• Inline math: <code>$x^2 + 1$</code></li>
-              <li>• Fractions: <code>$\frac{'{a}'}{'{b}'}$</code></li>
-              <li>• Square root: <code>$\sqrt{'{x}'}$</code></li>
-              <li>• Greek: <code>$\alpha, \beta, \theta, \pi$</code></li>
-            </ul>
-          </div>
         </div>
       </div>
     );
@@ -595,10 +491,10 @@ export default function SPMAddMathApp() {
                       <MathText text={option} />
                     </span>
                     {showExplanation && index === currentQuestion.correct && (
-                      <CheckCircle className="w-6 h-6 text-green-600" />
+                      <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
                     )}
                     {showExplanation && index === selectedAnswer && index !== currentQuestion.correct && (
-                      <XCircle className="w-6 h-6 text-red-600" />
+                      <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
                     )}
                   </button>
                 );
@@ -608,9 +504,9 @@ export default function SPMAddMathApp() {
             {showExplanation && (
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
                 <h4 className="font-bold text-blue-900 mb-2">Explanation:</h4>
-                <p className="text-blue-800">
+                <div className="text-blue-800">
                   <MathText text={currentQuestion.explanation} />
-                </p>
+                </div>
               </div>
             )}
 
