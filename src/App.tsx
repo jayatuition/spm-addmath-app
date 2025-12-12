@@ -26,6 +26,86 @@ const TOPICS_METADATA = {
   }
 };
 
+// LaTeX rendering component
+function MathText({ text }) {
+  const [renderedText, setRenderedText] = useState('');
+
+  useEffect(() => {
+    if (!text) return;
+    
+    // Replace LaTeX delimiters with HTML
+    let processed = text;
+    
+    // Process inline math: $...$
+    processed = processed.replace(/\$([^$]+)\$/g, (match, latex) => {
+      return `<span class="latex-inline">${renderSimpleLatex(latex)}</span>`;
+    });
+    
+    // Process display math: $$...$$
+    processed = processed.replace(/\$\$([^$]+)\$\$/g, (match, latex) => {
+      return `<div class="latex-display">${renderSimpleLatex(latex)}</div>`;
+    });
+    
+    setRenderedText(processed);
+  }, [text]);
+
+  // Simple LaTeX to HTML converter for common math symbols
+  const renderSimpleLatex = (latex) => {
+    let html = latex;
+    
+    // Superscripts: x^2 -> x²
+    html = html.replace(/\^2/g, '²');
+    html = html.replace(/\^3/g, '³');
+    html = html.replace(/\^(\d)/g, '<sup>$1</sup>');
+    html = html.replace(/\^{([^}]+)}/g, '<sup>$1</sup>');
+    
+    // Subscripts: x_1 -> x₁
+    html = html.replace(/_(\d)/g, '<sub>$1</sub>');
+    html = html.replace(/_{([^}]+)}/g, '<sub>$1</sub>');
+    
+    // Fractions: \frac{a}{b}
+    html = html.replace(/\\frac{([^}]+)}{([^}]+)}/g, '<span class="fraction"><span class="frac-num">$1</span><span class="frac-line"></span><span class="frac-den">$2</span></span>');
+    
+    // Square root: \sqrt{x}
+    html = html.replace(/\\sqrt{([^}]+)}/g, '√($1)');
+    html = html.replace(/\\sqrt/g, '√');
+    
+    // Greek letters
+    html = html.replace(/\\alpha/g, 'α');
+    html = html.replace(/\\beta/g, 'β');
+    html = html.replace(/\\gamma/g, 'γ');
+    html = html.replace(/\\delta/g, 'δ');
+    html = html.replace(/\\theta/g, 'θ');
+    html = html.replace(/\\pi/g, 'π');
+    html = html.replace(/\\sigma/g, 'σ');
+    html = html.replace(/\\omega/g, 'ω');
+    
+    // Math symbols
+    html = html.replace(/\\times/g, '×');
+    html = html.replace(/\\div/g, '÷');
+    html = html.replace(/\\pm/g, '±');
+    html = html.replace(/\\neq/g, '≠');
+    html = html.replace(/\\leq/g, '≤');
+    html = html.replace(/\\geq/g, '≥');
+    html = html.replace(/\\approx/g, '≈');
+    html = html.replace(/\\infty/g, '∞');
+    html = html.replace(/\\int/g, '∫');
+    html = html.replace(/\\sum/g, '∑');
+    
+    // Remove remaining backslashes
+    html = html.replace(/\\/g, '');
+    
+    return html;
+  };
+
+  return (
+    <span 
+      dangerouslySetInnerHTML={{ __html: renderedText }} 
+      className="math-content"
+    />
+  );
+}
+
 export default function SPMAddMathApp() {
   const [questionsData, setQuestionsData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +122,50 @@ export default function SPMAddMathApp() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
-  // Fetch questions from Google Sheets
+  // Add CSS for LaTeX rendering
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .math-content {
+        font-size: 1.1em;
+      }
+      .latex-inline {
+        display: inline-block;
+        margin: 0 2px;
+      }
+      .latex-display {
+        display: block;
+        text-align: center;
+        margin: 10px 0;
+        font-size: 1.2em;
+      }
+      .fraction {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        vertical-align: middle;
+        margin: 0 3px;
+      }
+      .frac-num {
+        border-bottom: 1px solid currentColor;
+        padding: 0 3px;
+      }
+      .frac-den {
+        padding: 0 3px;
+      }
+      sup {
+        font-size: 0.75em;
+        vertical-align: super;
+      }
+      sub {
+        font-size: 0.75em;
+        vertical-align: sub;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
   const fetchQuestions = async () => {
     setIsLoading(true);
     try {
@@ -249,7 +372,7 @@ export default function SPMAddMathApp() {
               <BookOpen className="w-16 h-16 text-indigo-600" />
             </div>
             <h1 className="text-4xl font-bold text-gray-800 mb-2">SPM Additional Mathematics</h1>
-            <p className="text-gray-600">Practice questions for SPM Add Math</p>
+            <p className="text-gray-600">Practice questions with LaTeX support</p>
             {lastUpdated && (
               <p className="text-sm text-gray-500 mt-2">
                 Updated: {lastUpdated.toLocaleString()}
@@ -296,13 +419,14 @@ export default function SPMAddMathApp() {
           </div>
 
           <div className="mt-12 bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">How It Works</h3>
-            <ol className="space-y-2 text-gray-600">
-              <li>1. Questions loaded from Google Sheets</li>
-              <li>2. Select Form 4 or Form 5</li>
-              <li>3. Choose a topic and number of questions</li>
-              <li>4. Get instant feedback with explanations</li>
-            </ol>
+            <h3 className="text-xl font-bold text-gray-800 mb-3">LaTeX Math Support</h3>
+            <p className="text-gray-600 mb-2">You can use LaTeX in your questions:</p>
+            <ul className="text-sm text-gray-600 space-y-1">
+              <li>• Inline math: <code>$x^2 + 1$</code></li>
+              <li>• Fractions: <code>$\frac{'{a}'}{'{b}'}$</code></li>
+              <li>• Square root: <code>$\sqrt{'{x}'}$</code></li>
+              <li>• Greek: <code>$\alpha, \beta, \theta, \pi$</code></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -435,11 +559,11 @@ export default function SPMAddMathApp() {
         {!isQuizComplete ? (
           <div className="bg-white rounded-lg shadow-md p-8">
             <h3 className="text-xl font-semibold text-gray-800 mb-6">
-              {currentQuestion.question}
+              <MathText text={currentQuestion.question} />
             </h3>
 
             {currentQuestion.diagram && (
-              <img src={currentQuestion.diagram} alt="diagram" className="max-w-full rounded-lg mb-6" style={{ maxHeight: '300px' }} />
+              <img src={currentQuestion.diagram} alt="diagram" className="max-w-full rounded-lg mb-6 mx-auto" style={{ maxHeight: '300px' }} />
             )}
 
             <div className="space-y-3 mb-6">
@@ -467,7 +591,9 @@ export default function SPMAddMathApp() {
                     disabled={showExplanation}
                     className={`w-full p-4 rounded-lg border-2 ${borderColor} ${bgColor} text-left flex items-center justify-between`}
                   >
-                    <span className="font-medium text-gray-800">{option}</span>
+                    <span className="font-medium text-gray-800">
+                      <MathText text={option} />
+                    </span>
                     {showExplanation && index === currentQuestion.correct && (
                       <CheckCircle className="w-6 h-6 text-green-600" />
                     )}
@@ -482,7 +608,9 @@ export default function SPMAddMathApp() {
             {showExplanation && (
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
                 <h4 className="font-bold text-blue-900 mb-2">Explanation:</h4>
-                <p className="text-blue-800">{currentQuestion.explanation}</p>
+                <p className="text-blue-800">
+                  <MathText text={currentQuestion.explanation} />
+                </p>
               </div>
             )}
 
