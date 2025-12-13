@@ -10,8 +10,8 @@ const TOPICS_METADATA = {
       { id: 'form4-functions', name: 'Functions', description: 'Composite functions, inverse functions' },
       { id: 'form4-quadratic-equations', name: 'Quadratic Equations', description: 'Solving, discriminant, roots' },
       { id: 'form4-quadratic-functions', name: 'Quadratic Functions', description: 'Graphs, max/min points' },
-      { id: 'form4-indices-logarithms', name: 'Indices & Logarithms', description: 'Laws of indices' },
-      { id: 'form4-progressions', name: 'Progressions', description: 'AP GP' }
+      { id: 'form4-indices-logarithms', name: 'Indices & Logarithms', description: 'Laws of indices' }
+      //{ id: 'form4-progressions', name: 'Progressions', description: 'AP GP' }
     ]
   },
   form5: {
