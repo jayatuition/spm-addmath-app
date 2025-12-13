@@ -356,19 +356,82 @@ export default function SPMAddMathApp() {
                 </p>
               </div>
 
-              <div className="mb-8">
-                <label className="block text-gray-700 font-semibold mb-3">
-                  How many questions?
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max={availableQuestions}
-                  value={numQuestions}
-                  onChange={(e) => setNumQuestions(Math.min(Math.max(1, parseInt(e.target.value) || 1), availableQuestions))}
-                  className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                />
-              </div>
+              // Replace the number input section in your Practice Settings screen with this:
+
+          <div className="mb-8">
+            <label className="block text-gray-700 font-semibold mb-3">
+              How many questions do you want to practice?
+            </label>
+            
+            <div className="flex items-center gap-3">
+              {/* Minus Button */}
+              <button
+                onClick={() => setNumQuestions(Math.max(1, numQuestions - 1))}
+                disabled={numQuestions <= 1}
+                className="w-12 h-12 bg-gray-200 rounded-lg font-bold text-xl hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                −
+              </button>
+              
+              {/* Number Input */}
+              <input
+                type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                min="1"
+                max={availableQuestions}
+                value={numQuestions}
+                onFocus={(e) => e.target.select()}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value) || 1;
+                  setNumQuestions(Math.min(Math.max(1, val), availableQuestions));
+                }}
+                className="flex-1 p-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg text-center font-semibold"
+              />
+              
+              {/* Plus Button */}
+              <button
+                onClick={() => setNumQuestions(Math.min(availableQuestions, numQuestions + 1))}
+                disabled={numQuestions >= availableQuestions}
+                className="w-12 h-12 bg-gray-200 rounded-lg font-bold text-xl hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                +
+              </button>
+            </div>
+            
+            <p className="text-sm text-gray-500 mt-2">
+              Choose between 1 and {availableQuestions} questions
+            </p>
+            
+            {/* Quick selection buttons */}
+            <div className="flex gap-2 mt-3 flex-wrap">
+              {[5, 10, 15, 20].filter(n => n <= availableQuestions).map(num => (
+                <button
+                  key={num}
+                  onClick={() => setNumQuestions(num)}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    numQuestions === num 
+                      ? 'bg-indigo-600 text-white' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {num}
+                </button>
+              ))}
+              {availableQuestions > 20 && (
+                <button
+                  onClick={() => setNumQuestions(availableQuestions)}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    numQuestions === availableQuestions 
+                      ? 'bg-indigo-600 text-white' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  All ({availableQuestions})
+                </button>
+              )}
+            </div>
+          </div>
 
               <button
                 onClick={startPractice}
