@@ -17,7 +17,7 @@ const TOPICS_METADATA = {
   form5: {
     title: "Form 5 Topics",
     topics: [
-      { id: 'form5-progressions', name: 'Progressions', description: 'AP and GP' },
+      { id: 'form5-trignometry-functions', name: 'Trignometry', description: 'sine cosine rule' },
       { id: 'form5-integration', name: 'Integration', description: 'Definite and indefinite' },
       { id: 'form5-differentiation', name: 'Derivatives', description: 'First principle & problems ' },
       { id: 'form5-vectors', name: 'Vectors', description: 'Vector operations' },
