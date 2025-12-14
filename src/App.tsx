@@ -1,27 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BookOpen, Trophy, ChevronRight, Clock, CheckCircle, XCircle, RotateCcw, RefreshCw, Database } from 'lucide-react';
 
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKOTdOabg8YkThCV3pmIJjUNapPu_3WRoVsXSKPG4JMiH8jEvzQy-N-C8Badz20zMsua0Ni6fk8Dt7/pub?output=csv';
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR-12TNXK5NM-luO--4PXUvHHDGcngdEI30rsk--R1rWSQVSfQXYCmHoPwZUeEb3iFBdlv0s1IW__cL/pub?output=csv';
 
 const TOPICS_METADATA = {
   form4: {
     title: "Form 4 Topics",
     topics: [
-      { id: 'form4-functions', name: 'Functions', description: 'Composite functions, inverse functions' },
-      { id: 'form4-quadratic-equations', name: 'Quadratic Equations', description: 'Solving, discriminant, roots' },
-      //{ id: 'form4-quadratic-functions', name: 'Quadratic Functions', description: 'Graphs, max/min points' },
-      { id: 'form4-indices-logarithms', name: 'Indices & Logarithms', description: 'Laws of indices' },
-      { id: 'form4-vectors', name: 'Vectors', description: 'Vector operations' },
-      { id: 'form4-progressions', name: 'Progressions', description: 'AP GP' }
+      { id: 'form4-measurements', name: 'Units & Measurments', description: 'Scientific Processes' },
+      { id: 'form4-force-1', name: 'Force 1', description: 'Newtons laws' },
+      { id: 'form4-gravitation', name: 'Gravitation', description: '' },
+      { id: 'form4-heat', name: 'Heat', description: '' },
+      { id: 'form4-waves', name: 'Waves', description: '' },
+      { id: 'form4-optics', name: 'Optics', description: '' }
     ]
   },
   form5: {
     title: "Form 5 Topics",
     topics: [
-      { id: 'form5-permutation-combination', name: 'Permutation & Combination', description: 'Statistics' },
-      { id: 'form5-integration', name: 'Integration', description: 'Definite and indefinite' },
-      { id: 'form5-differentiation', name: 'Derivatives', description: 'First principle & problems ' },     
-      { id: 'form5-probability', name: 'Probability Distibution', description: 'Normal distribution' }
+      { id: 'form5-electricity', name: 'Current Electricity', description: '' },
+      { id: 'form5-emi', name: 'Electromagnetism', description: '  ' },
+      { id: 'form5-electronics', name: 'Electronics', description: '    ' },     
+      { id: 'form5-force-2', name: 'Force 2 ', description: ' ' },
+      { id: 'form5-nuclear', name: 'Nuclear Energy ', description: ' ' },
+      { id: 'form5-pressure', name: 'Pressure ', description: ' ' }
     ]
   }
 };
@@ -280,7 +282,7 @@ export default function SPMAddMathApp() {
             <div className="flex items-center justify-center mb-4">
               <BookOpen className="w-16 h-16 text-indigo-600" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">SPM Additional Mathematics</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">SPM PHYSICS</h1>
             <p className="text-gray-600">Practice questions with LaTeX support</p>
             {lastUpdated && (
               <p className="text-sm text-gray-500 mt-2">
