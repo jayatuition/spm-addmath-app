@@ -9,8 +9,9 @@ const TOPICS_METADATA = {
     topics: [
       { id: 'form4-functions', name: 'Functions', description: 'Composite functions, inverse functions' },
       { id: 'form4-quadratic-equations', name: 'Quadratic Equations', description: 'Solving, discriminant, roots' },
-      { id: 'form4-quadratic-functions', name: 'Quadratic Functions', description: 'Graphs, max/min points' },
+      //{ id: 'form4-quadratic-functions', name: 'Quadratic Functions', description: 'Graphs, max/min points' },
       { id: 'form4-indices-logarithms', name: 'Indices & Logarithms', description: 'Laws of indices' },
+      { id: 'form4-vectors', name: 'Vectors', description: 'Vector operations' },
       { id: 'form4-progressions', name: 'Progressions', description: 'AP GP' }
     ]
   },
@@ -19,8 +20,7 @@ const TOPICS_METADATA = {
     topics: [
       { id: 'form5-permutation-combination', name: 'Permutation & Combination', description: 'Statistics' },
       { id: 'form5-integration', name: 'Integration', description: 'Definite and indefinite' },
-      { id: 'form5-differentiation', name: 'Derivatives', description: 'First principle & problems ' },
-      { id: 'form5-vectors', name: 'Vectors', description: 'Vector operations' },
+      { id: 'form5-differentiation', name: 'Derivatives', description: 'First principle & problems ' },     
       { id: 'form5-probability', name: 'Probability', description: 'Basic probability' }
     ]
   }
