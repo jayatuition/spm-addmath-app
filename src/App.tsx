@@ -21,7 +21,7 @@ const TOPICS_METADATA = {
       { id: 'form5-permutation-combination', name: 'Permutation & Combination', description: 'Statistics' },
       { id: 'form5-integration', name: 'Integration', description: 'Definite and indefinite' },
       { id: 'form5-differentiation', name: 'Derivatives', description: 'First principle & problems ' },     
-      { id: 'form5-probability', name: 'Probability', description: 'Basic probability' }
+      { id: 'form5-probability', name: 'Probability Distibution', description: 'Normal distribution' }
     ]
   }
 };
