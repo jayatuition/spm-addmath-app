@@ -1,29 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BookOpen, Trophy, ChevronRight, Clock, CheckCircle, XCircle, RotateCcw, RefreshCw, Database } from 'lucide-react';
 
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR-12TNXK5NM-luO--4PXUvHHDGcngdEI30rsk--R1rWSQVSfQXYCmHoPwZUeEb3iFBdlv0s1IW__cL/pub?output=csv';
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKOTdOabg8YkThCV3pmIJjUNapPu_3WRoVsXSKPG4JMiH8jEvzQy-N-C8Badz20zMsua0Ni6fk8Dt7/pub?output=csv';
 
 const TOPICS_METADATA = {
   form4: {
     title: "Form 4 Topics",
     topics: [
-      { id: 'form4-functions', name: 'Units & Measurments', description: 'Scientific Processes' },
-      { id: 'form4-indices-logarithms', name: 'Force 1', description: 'Newtons laws' },
-      { id: 'form4-progressions', name: 'Gravitation', description: '' },
-      { id: 'form4-quadratic-equations', name: 'Heat', description: '' },
-      { id: 'form4-vectors', name: 'Waves', description: '' }
-     // { id: 'form4-optics', name: 'Optics', description: '' }
+      { id: 'form4-functions', name: 'Functions & Inverse ', description: '' },
+      { id: 'form4-indices-logarithms', name: 'Indices', description: '' },
+      { id: 'form4-progressions', name: 'Progression', description: '' },
+      { id: 'form4-quadratic-equations', name: 'Quadratic Functions', description: '' },
+      { id: 'form4-vectors', name: 'Vectors', description: '' }
+      
     ]
   },
   form5: {
     title: "Form 5 Topics",
     topics: [
-      { id: 'form5-differentiationy', name: 'Current Electricity', description: '' },
-      { id: 'form5-integration', name: 'Electromagnetism', description: '  ' },
-      { id: 'form5-electronics', name: 'Electronics', description: '    ' },     
-      { id: 'form5-permutation-combination', name: 'Force 2 ', description: ' ' },
-      { id: 'form5-probability', name: 'Nuclear Energy ', description: ' ' }
-      //{ id: 'form5-pressure', name: 'Pressure ', description: ' ' }
+      { id: 'form5-differentiation', name: 'Derivatives ', description: '' },
+      { id: 'form5-integration', name: 'Integration', description: '  ' },
+      { id: 'form5-permutation-combination', name: 'Permutation Combination', description: ' ' },
+      { id: 'form5-probability', name: 'Probability  ', description: ' ' }
     ]
   }
 };
