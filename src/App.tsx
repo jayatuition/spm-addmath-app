@@ -7,23 +7,23 @@ const TOPICS_METADATA = {
   form4: {
     title: "Form 4 Topics",
     topics: [
-      { id: 'form4-measurements', name: 'Units & Measurments', description: 'Scientific Processes' },
-      { id: 'form4-force-1', name: 'Force 1', description: 'Newtons laws' },
-      { id: 'form4-gravitation', name: 'Gravitation', description: '' },
-      { id: 'form4-heat', name: 'Heat', description: '' },
-      { id: 'form4-waves', name: 'Waves', description: '' },
-      { id: 'form4-optics', name: 'Optics', description: '' }
+      { id: 'form4-functions', name: 'Units & Measurments', description: 'Scientific Processes' },
+      { id: 'form4-indices-logarithms', name: 'Force 1', description: 'Newtons laws' },
+      { id: 'form4-progressions', name: 'Gravitation', description: '' },
+      { id: 'form4-quadratic-equations', name: 'Heat', description: '' },
+      { id: 'form4-vectors', name: 'Waves', description: '' }
+     // { id: 'form4-optics', name: 'Optics', description: '' }
     ]
   },
   form5: {
     title: "Form 5 Topics",
     topics: [
-      { id: 'form5-electricity', name: 'Current Electricity', description: '' },
-      { id: 'form5-emi', name: 'Electromagnetism', description: '  ' },
+      { id: 'form5-differentiationy', name: 'Current Electricity', description: '' },
+      { id: 'form5-integration', name: 'Electromagnetism', description: '  ' },
       { id: 'form5-electronics', name: 'Electronics', description: '    ' },     
-      { id: 'form5-force-2', name: 'Force 2 ', description: ' ' },
-      { id: 'form5-nuclear', name: 'Nuclear Energy ', description: ' ' },
-      { id: 'form5-pressure', name: 'Pressure ', description: ' ' }
+      { id: 'form5-permutation-combination', name: 'Force 2 ', description: ' ' },
+      { id: 'form5-probability', name: 'Nuclear Energy ', description: ' ' }
+      //{ id: 'form5-pressure', name: 'Pressure ', description: ' ' }
     ]
   }
 };
@@ -282,7 +282,7 @@ export default function SPMAddMathApp() {
             <div className="flex items-center justify-center mb-4">
               <BookOpen className="w-16 h-16 text-indigo-600" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">SPM PHYSICS</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">SPM ADD MATH</h1>
             <p className="text-gray-600">Practice questions with LaTeX support</p>
             {lastUpdated && (
               <p className="text-sm text-gray-500 mt-2">
